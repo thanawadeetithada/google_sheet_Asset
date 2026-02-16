@@ -20,4 +20,675 @@
     width: 25px;
     text-align: center;
   }
+
+  /* โครงสร้างหลักและการจัดวาง */
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Sarabun', sans-serif; /* แนะนำให้ใช้ font ภาษาไทยที่ดูทันสมัย */
+  }
+
+  /* Header สีน้ำเงินด้านบน */
+  .analysis-header {
+    background-color: #7289da; /* สีม่วงน้ำเงินตามรูป */
+    margin: -24px -24px 0 -24px; /* ชดเชย padding ของ container หลัก */
+    height: 60px;
+  }
+
+  .date-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  /* หัวข้อ */
+  .analysis-title {
+    font-weight: bold;
+    color: #000;
+    font-size: 1.6rem;
+  }
+
+  /* กล่องข้อความ Input */
+  .custom-input {
+    width: 180px !important;
+    border-radius: 12px;
+    border: 1px solid #ced4da;
+    padding: 8px 15px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* ปุ่ม Search */
+  .btn-search {
+    background-color: #1e293b; /* สีกรมท่าเข้ม */
+    color: white;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+
+  .btn-search:hover {
+    background-color: #334155;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  /* แผ่นกระดาษผลลัพธ์ */
+  .result-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    min-height: 400px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  /* --- ส่วนที่เพิ่มใหม่เพื่อความสมบูรณ์แบบ --- */
+
+/* 1. จัดการ Sidebar ให้โทนสีเข้มและดูพรีเมียม (Deep Navy) */
+nav {
+  background-color: #111827 !important; /* สีดำน้ำเงินเข้มแบบในรูป */
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+  color: #9ca3af !important; /* สีตัวอักษรตอนยังไม่กด */
+  margin: 4px 12px;
+}
+
+.nav-link.active {
+  background-color: #2563eb !important; /* สีน้ำเงินสว่าง */
+  color: #ffffff !important;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.4); /* เพิ่มเงาสีน้ำเงินใต้เมนูที่เลือก */
+}
+
+/* 2. การตกแต่ง Stat Cards (แผ่นสถิติด้านบน) */
+.stat-card {
+  border: none;
+  border-radius: 16px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px); /* ยกตัวขึ้นเวลาเอาเมาส์วาง */
+}
+
+/* สีพื้นหลังพาสเทลตามรูป Dashboard */
+.bg-blue   { background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%); }
+.bg-pink   { background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); }
+.bg-green  { background: linear-gradient(135deg, #bbf7d0 0%, #4ade80 100%); }
+.bg-orange { background: linear-gradient(135deg, #fed7aa 0%, #fb923c 100%); }
+
+.stat-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.stat-icon {
+  font-size: 2.2rem;
+  color: rgba(0, 0, 0, 0.2); /* ไอคอนจางๆ ด้านหลัง */
+}
+
+/* 3. ตกแต่งแผ่นขาว (Content Card) ให้มีเงาฟุ้งแบบในรูป */
+.content-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* 4. ปรับแต่งตารางให้ดูสะอาดตา */
+.table {
+  border-radius: 12px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  background-color: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  color: #475569;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.025em;
+}
+
+/* 5. ส่วนของวันที่ใน Header */
+.date-text {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(4px);
+}
+
+/* สไตล์เพิ่มเติมสำหรับหน้า Search */
+.custom-search-input {
+  max-width: 500px;
+  border-radius: 12px;
+  border: 1px solid #ced4da;
+  padding: 10px 20px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ปรับแต่งปุ่ม Action ในตาราง */
+.table .btn {
+  padding: 4px 8px;
+  margin: 0 1px;
+  font-size: 0.85rem;
+}
+
+.table td {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* ปรับหัวตารางให้ดูเป็นระเบียบตามรูป */
+.table thead th {
+  background-color: #f8f9fa !important;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+/* ปรับแต่ง Label ให้ดูเหมือนในรูป */
+.form-label {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+/* ปรับแต่งช่อง Input ให้มีขอบมนและเงาจางๆ ด้านใน */
+.custom-input {
+  width: 200px !important;
+  height: 45px;
+  border-radius: 12px;
+  border: 1px solid #ced4da;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+}
+
+/* ปุ่ม Search สีกรมท่า */
+.btn-search {
+  background-color: #1e293b; /* สีกรมท่าเข้ม */
+  color: white;
+  border-radius: 10px;
+  padding: 8px 25px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-search:hover {
+  background-color: #334155;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* กรอบเนื้อหาผลลัพธ์ (ขนาดใหญ่) */
+.result-card {
+  min-height: 500px; /* ให้สูงพอสมควรเหมือนในรูป */
+  width: 100%;
+  background-color: #ffffff;
+  margin-top: 10px;
+}
+
+/* ปุ่ม Add Equipment สีเขียวตามรูป */
+.btn-add-equip {
+  background-color: #28a745; /* สีเขียว */
+  color: white;
+  border-radius: 12px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-add-equip:hover {
+  background-color: #218838;
+  color: white;
+  transform: scale(1.02);
+}
+
+/* ปรับแต่งปุ่ม Action ขนาดเล็ก */
+.btn-action {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* Badge สถานะ */
+.badge {
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* ปรับหัวตารางให้เป็นตัวพิมพ์ใหญ่และสีเทาอ่อน */
+.table thead th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #444;
+  background-color: #f8f9fa !important;
+}
+
+/* ปุ่ม Add User สีเขียวสดใส */
+.btn-add-user {
+  background-color: #28a745; /* สีเขียวตามรูป */
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-add-user:hover {
+  background-color: #218838;
+  color: white;
+  transform: scale(1.03);
+}
+
+/* ปรับแต่งช่อง Search ให้มีเงาจางๆ (Inner Shadow) */
+.custom-search-input {
+  max-width: 450px;
+  border-radius: 12px;
+  border: 1px solid #ced4da;
+  padding: 10px 15px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ปุ่ม Action ในหน้า User Management */
+.btn-sm {
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* เส้นขอบตารางและหัวตาราง */
+.table thead th {
+  background-color: #f8f9fa !important;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* ตกแต่งตารางให้ดูสะอาดตาเหมือนในรูป */
+.table thead th {
+  background-color: #f8f9fa !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.table td {
+  font-size: 0.9rem;
+  padding: 12px 8px;
+}
+
+/* ปุ่ม Action ขนาดเล็ก */
+.btn-action-sm {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+/* ข้อความสถานะ (Status) */
+.status-text {
+  font-weight: 500;
+  color: #444;
+}
+
+/* ปุ่ม Click ในช่อง Maintenance Record */
+.btn-click {
+  color: #000;
+  font-weight: 400;
+  transition: color 0.2s;
+}
+
+.btn-click:hover {
+  color: #2563eb;
+  text-decoration: underline !important;
+}
+
+/* ปรับ Content Card ให้ครอบคลุมตาราง */
+.content-card {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 4px; /* ขอบเหลี่ยมตามรูป Home Equipment */
+}
+
+/* การจัดรูปแบบช่อง Input พร้อมไอคอน */
+.input-group-custom {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group-custom .input-icon {
+  position: absolute;
+  left: 15px;
+  color: #555;
+  font-size: 1.2rem;
+  z-index: 5;
+}
+
+.input-group-custom .form-control {
+  padding-left: 50px; /* เว้นที่ให้ไอคอนด้านซ้าย */
+  padding-right: 45px;
+  height: 50px;
+  border-radius: 25px; /* ขอบมนมากตามรูป */
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  font-size: 1.1rem;
+}
+
+/* ไอคอนลูกตาสำหรับรหัสผ่าน */
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* ปุ่ม Sign up สีเขียว */
+.btn-signup {
+  background-color: #28a745;
+  color: white;
+  border-radius: 10px;
+  font-weight: 500;
+  border: none;
+  min-width: 120px;
+}
+
+.btn-signup:hover {
+  background-color: #218838;
+  color: white;
+}
+
+/* ปุ่ม Cancel สีเทา */
+.btn-cancel {
+  background-color: #ccc;
+  color: #000;
+  border-radius: 10px;
+  font-weight: 500;
+  border: none;
+  min-width: 120px;
+}
+
+.btn-cancel:hover {
+  background-color: #bbb;
+}
+
+/* ปรับฟอร์มการ์ดให้มีขอบมนและเงาหนา */
+.form-card {
+  border-radius: 30px;
+  border: none;
+}
+
+/* ปรับแต่งการ์ดฟอร์มให้ขอบมนนุ่มนวล */
+.form-card {
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.05);
+  background-color: #ffffff;
+}
+
+/* ช่อง Input ที่มีเงาจางๆ ด้านในและขอบมน */
+.custom-form-input {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 10px 15px;
+  background-color: #fdfdfd;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+}
+
+.custom-form-input:focus {
+  border-color: #7289da;
+  box-shadow: 0 0 0 0.2rem rgba(114, 137, 218, 0.25);
+}
+
+/* ปรับระยะห่าง Label */
+.form-label {
+  color: #444;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+/* ปุ่ม Add สีเขียวตามรูป */
+.btn-add {
+  background-color: #28a745;
+  color: white;
+  border-radius: 12px;
+  min-width: 120px;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-add:hover {
+  background-color: #218838;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ปุ่ม Cancel สีเทาอ่อน */
+.btn-cancel {
+  background-color: #ccc;
+  color: #333;
+  border-radius: 12px;
+  min-width: 120px;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-cancel:hover {
+  background-color: #bbb;
+}
+
+/* การจัดรูปแบบข้อมูล Info ด้านบน */
+.equipment-info-grid {
+  font-size: 1.05rem;
+  color: #000;
+}
+
+.info-label {
+  font-weight: 400;
+  margin-right: 5px;
+}
+
+.info-value {
+  font-weight: 400;
+}
+
+/* ปรับแต่งตารางรายละเอียด */
+.detail-table {
+  border: 1px solid #000 !important;
+}
+
+.detail-table thead th {
+  border: 1px solid #000 !important;
+  background-color: #ffffff !important; /* ในรูปเป็นสีขาวพื้นฐาน */
+  font-weight: 400;
+  font-size: 0.95rem;
+  padding: 10px;
+}
+
+.detail-table td {
+  border: 1px solid #000 !important;
+  padding: 40px 10px; /* เพิ่ม Padding บน-ล่าง ให้แถวดูสูงเหมือนในรูป */
+  font-size: 1rem;
+}
+
+/* ปรับระยะห่างหัวข้อ */
+h1 { font-size: 2.2rem; }
+h3 { font-size: 1.6rem; }
+
+/* ปรับแต่งการ์ดฟอร์มให้โค้งมนนุ่มนวล */
+.form-card {
+  border-radius: 25px;
+  border: none;
+}
+
+/* ช่อง Input ขอบมนและมีเงาจางๆ ด้านใน */
+.custom-input-field {
+  border-radius: 12px;
+  border: 1px solid #ced4da;
+  height: 45px;
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* น้ำหนักตัวอักษรของฉลาก */
+.fw-500 {
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+
+/* ปุ่ม Repair สีเหลืองทองตามรูป */
+.btn-repair {
+  background-color: #f1b418; /* สีเหลืองทอง */
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  min-width: 120px;
+  font-size: 1.2rem;
+}
+
+.btn-repair:hover {
+  background-color: #d9a216;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ปุ่ม Cancel สีเทา */
+.btn-cancel {
+  background-color: #ccc;
+  color: #000;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  min-width: 120px;
+  font-size: 1.2rem;
+}
+
+.btn-cancel:hover {
+  background-color: #bbb;
+}
+
+/* ปุ่ม Edit สีเหลืองทองตามรูป */
+.btn-edit-yellow {
+  background-color: #f1b418; /* สีเหลืองทอง */
+  color: white;
+  border-radius: 12px;
+  min-width: 120px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-edit-yellow:hover {
+  background-color: #d9a216;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ส่วนอื่นๆ ของฟอร์ม (เหมือนกับหน้า Add Equipment) */
+.form-card {
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.custom-form-input {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 10px 15px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  color: #333;
+  border-radius: 12px;
+  min-width: 120px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: none;
+}
+
+/* การจัดรูปแบบช่อง Input พร้อมไอคอน */
+.input-group-custom {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group-custom .input-icon {
+  position: absolute;
+  left: 20px;
+  color: #333;
+  font-size: 1.1rem;
+  z-index: 5;
+}
+
+.input-group-custom .form-control {
+  padding-left: 55px; /* เว้นที่ให้ไอคอน */
+  height: 50px;
+  border-radius: 25px; /* ขอบมนสูงเหมือนในรูป */
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* ปุ่ม Edit สีเหลืองทอง */
+.btn-edit-user {
+  background-color: #f1b418;
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: none;
+  min-width: 130px;
+  transition: all 0.2s;
+}
+
+.btn-edit-user:hover {
+  background-color: #d9a216;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ปุ่ม Cancel สีเทา */
+.btn-cancel {
+  background-color: #ccc;
+  color: #000;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: none;
+  min-width: 130px;
+}
+
+/* การ์ดฟอร์มโค้งมนสูง */
+.form-card {
+  border-radius: 30px;
+  border: none;
+}
 </style>

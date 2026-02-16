@@ -1,0 +1,63 @@
+<div class="edit-equipment-container">
+  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h1 class="fw-bold mb-4">แก้ไขข้อมูลเครื่องวัด</h1>
+
+    <div class="form-card content-card mx-auto p-4 shadow-sm" style="max-width: 800px;">
+      <h5 class="fw-bold mb-4">ฟอร์มเพิ่มข้อมูลเครื่องมือวัด</h5>
+      
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label small fw-bold text-uppercase">Description</label>
+          <input type="text" id="edit-desc" class="form-control custom-form-input" value="Frequency Counter">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label small fw-bold text-uppercase">Model</label>
+          <input type="text" id="edit-model" class="form-control custom-form-input" value="1856D">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label small fw-bold text-uppercase">Manufacturer</label>
+          <input type="text" id="edit-brand" class="form-control custom-form-input" value="BK Precision">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label small fw-bold text-uppercase">Asset</label>
+          <input type="text" id="edit-asset" class="form-control custom-form-input" value="A 00835/07">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label small fw-bold text-uppercase">Serialnum</label>
+          <input type="text" id="edit-serial" class="form-control custom-form-input" value="5020359">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label small fw-bold text-uppercase">Status</label>
+          <input type="text" id="edit-status" class="form-control custom-form-input" value="Active">
+        </div>
+
+        <div class="col-12 d-flex justify-content-center gap-4 mt-5">
+          <button class="btn btn-edit-yellow shadow-sm px-4 py-2" onclick="updateData()">Edit</button>
+          <button class="btn btn-cancel shadow-sm px-4 py-2" onclick="loadPage(null, 'All_equipment')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateData() {
+    // ฟังก์ชันสำหรับส่งข้อมูลที่แก้ไขแล้วกลับไปยัง Server
+    const updatedData = {
+      desc: document.getElementById('edit-desc').value,
+      model: document.getElementById('edit-model').value,
+      // เก็บค่าอื่นๆ...
+    };
+    console.log("Updating equipment:", updatedData);
+    // google.script.run...
+  }
+</script>

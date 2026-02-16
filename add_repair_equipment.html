@@ -1,0 +1,76 @@
+<div class="add-repair-container">
+  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h1 class="fw-bold mb-4">ข้อมูลการซ่อมเครื่องมือวัด</h1>
+
+    <div class="form-card content-card mx-auto p-5 shadow" style="max-width: 750px;">
+      <h5 class="fw-bold mb-5">ฟอร์มเพิ่มข้อมูลการซ่อมเครื่องมือวัด</h5>
+      
+      <div class="form-body px-md-5">
+        
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <label class="form-label mb-0 fw-500">ชื่อเครื่องมือวัด</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control custom-input-field">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <label class="form-label mb-0 fw-500">ว/ด/ป ที่ซ่อม</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control custom-input-field">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <label class="form-label mb-0 fw-500">ว/ด/ป ที่ซ่อมเสร็จ</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control custom-input-field">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <label class="form-label mb-0 fw-500">อาการเสีย</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control custom-input-field">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-4">
+          <div class="col-sm-4">
+            <label class="form-label mb-0 fw-500">ราคาที่ซ่อม</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control custom-input-field">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5">
+          <div class="col-sm-4">
+            <label class="form-label mb-0 fw-500">บริษัทที่ซ่อม</label>
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control custom-input-field">
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-4 mt-2">
+          <button class="btn btn-repair shadow-sm px-4 py-2" onclick="saveRepairData()">Repair</button>
+          <button class="btn btn-cancel shadow-sm px-4 py-2" onclick="loadPage(null, 'Search')">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

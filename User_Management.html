@@ -1,0 +1,71 @@
+<div class="user-management-container">
+  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h1 class="fw-bold mb-4">ข้อมูลผู้ใช้งาน</h1>
+
+    <div class="search-bar-section mb-4">
+      <div class="d-flex align-items-center mb-3">
+        <input type="text" id="userSearchInput" class="form-control custom-search-input me-2" placeholder="ชื่อผู้ใช้งาน....">
+        <button class="btn btn-search px-4 shadow-sm" onclick="searchUser()">search</button>
+      </div>
+      
+      <button class="btn btn-add-user px-4 shadow-sm" onclick="addNewUser()">
+        <i class="fa-solid fa-plus me-1"></i> Add user
+      </button>
+    </div>
+
+    <div class="content-card shadow-sm overflow-hidden">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0 align-middle text-center">
+          <thead class="table-light">
+            <tr>
+              <th style="width: 20%;">Name</th>
+              <th style="width: 20%;">Surname</th>
+              <th style="width: 25%;">Email</th>
+              <th style="width: 20%;">Role</th>
+              <th style="width: 15%;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <tr>
+              <td>Werachai</td>
+              <td>Kurathong</td>
+              <td>Werachai.ku@hotmail.com</td>
+              <td>AO.AS.(ศว.สว.) - มข.</td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <button class="btn btn-warning btn-sm text-white px-2 py-1" onclick="editUser(this)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm px-2 py-1" onclick="deleteUser(this)">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ฟังก์ชันสำหรับเรียกข้อมูลผู้ใช้จาก Server ตอนโหลดหน้า
+  function loadUserData() {
+    google.script.run.withSuccessHandler(showUsers).getUserData();
+  }
+
+  function showUsers(data) {
+    const tbody = document.getElementById('userTableBody');
+    // ลอจิกสำหรับสร้างแถวตารางจากข้อมูลใน Google Sheets
+  }
+
+  function searchUser() {
+    const val = document.getElementById('userSearchInput').value;
+    console.log("Searching for:", val);
+  }
+</script>

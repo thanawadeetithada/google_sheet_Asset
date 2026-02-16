@@ -1,0 +1,73 @@
+<div class="equipment-page-container">
+  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h1 class="fw-bold mb-4">รายการเครื่องมือวัด กอง ศว.สว. ทั้งหมด</h1>
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div class="d-flex align-items-center flex-grow-1 me-3">
+        <input type="text" id="searchEquip" class="form-control custom-search-input me-2" placeholder="คำค้นหา...">
+        <button class="btn btn-search px-4 shadow-sm" onclick="handleSearch()">search</button>
+      </div>
+      
+      <button class="btn btn-add-equip px-4 shadow-sm" onclick="showAddModal()">
+        <i class="fa-solid fa-plus me-1"></i> Add Equipment
+      </button>
+    </div>
+
+    <div class="content-card shadow-sm overflow-hidden">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0 align-middle text-center">
+          <thead class="table-light">
+            <tr>
+              <th>DESCRIPTION</th>
+              <th>MODEL</th>
+              <th>MANUFACTURER</th>
+              <th>ASSET</th>
+              <th>SERIAL</th>
+              <th>Status</th>
+              <th style="width: 120px;">Action</th>
+              <th>Maintenance Record</th>
+            </tr>
+          </thead>
+          <tbody id="equipmentTableBody">
+            <tr>
+              <td class="text-start ps-3">Communication System Analyzer</td>
+              <td>R2012D /0900</td>
+              <td>Motorola</td>
+              <td>A 15123</td>
+              <td>129813</td>
+              <td><span class="badge bg-light text-dark border">In Repair</span></td>
+              <td>
+                <div class="d-flex justify-content-center gap-1">
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+              <td><a href="#" class="text-decoration-none text-dark">Click</a></td>
+            </tr>
+            <tr>
+              <td class="text-start ps-3">Peak Power Meter</td>
+              <td>E4416A</td>
+              <td>Agilent</td>
+              <td>A 00359 /05</td>
+              <td>GB4129 3323</td>
+              <td><span class="badge bg-success">Active</span></td>
+              <td>
+                <div class="d-flex justify-content-center gap-1">
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+              <td><a href="#" class="text-decoration-none text-dark">Click</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

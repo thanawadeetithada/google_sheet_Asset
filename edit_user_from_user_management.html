@@ -1,0 +1,54 @@
+<div class="edit-user-container">
+  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h2 class="fw-bold mb-4">แก้ไขข้อมูลผู้ใช้งาน</h2>
+
+    <div class="form-card content-card mx-auto p-5 shadow" style="max-width: 600px;">
+      <div class="form-body px-md-4">
+        
+        <div class="input-group-custom mb-3">
+          <span class="input-icon"><i class="fa-regular fa-user"></i></span>
+          <input type="text" id="edit-name" class="form-control" value="Werachai">
+        </div>
+
+        <div class="input-group-custom mb-3">
+          <span class="input-icon"><i class="fa-regular fa-user"></i></span>
+          <input type="text" id="edit-surname" class="form-control" value="Kurathong">
+        </div>
+
+        <div class="input-group-custom mb-3">
+          <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+          <input type="email" id="edit-email" class="form-control" value="Werachai.ku@hotmail.com">
+        </div>
+
+        <div class="input-group-custom mb-4">
+          <span class="input-icon"><i class="fa-regular fa-address-book"></i></span>
+          <input type="text" id="edit-role" class="form-control" value="AO.AS.(ศว.สว.) - มข.">
+        </div>
+
+        <div class="d-flex justify-content-center gap-4 mt-2">
+          <button class="btn btn-edit-user shadow-sm px-4 py-2" onclick="updateUser()">Edit</button>
+          <button class="btn btn-cancel shadow-sm px-4 py-2" onclick="loadPage(null, 'User_Management')">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateUser() {
+    // รวบรวมข้อมูลที่แก้ไขแล้วส่งไปที่ Code.gs
+    const userData = {
+      name: document.getElementById('edit-name').value,
+      surname: document.getElementById('edit-surname').value,
+      email: document.getElementById('edit-email').value,
+      role: document.getElementById('edit-role').value
+    };
+    console.log("Updating User:", userData);
+    // google.script.run...
+  }
+</script>

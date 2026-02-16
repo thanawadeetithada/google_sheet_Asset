@@ -1,0 +1,127 @@
+<div class="home-container">
+ <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h1 class="fw-bold mb-4">ภาพรวมระบบ Asset Management</h1>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="stat-card bg-blue shadow-sm p-3 d-flex justify-content-between align-items-center">
+          <div>
+            <div class="stat-label">อุปกรณ์ทั้งหมด</div>
+            <div class="stat-value">256 ชิ้น</div>
+          </div>
+          <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card bg-pink shadow-sm p-3 d-flex justify-content-between align-items-center">
+          <div>
+            <div class="stat-label">ส่งซ่อม</div>
+            <div class="stat-value">12 ชิ้น</div>
+          </div>
+          <div class="stat-icon"><i class="fa-solid fa-wrench"></i></div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card bg-green shadow-sm p-3 d-flex justify-content-between align-items-center">
+          <div>
+            <div class="stat-label">ค่าใช้จ่ายซ่อมบำรุงเดือนนี้</div>
+            <div class="stat-value">฿15,400</div>
+          </div>
+          <div class="stat-icon"><i class="fa-solid fa-money-bill-1-wave"></i></div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-card bg-orange shadow-sm p-3 d-flex justify-content-between align-items-center">
+          <div>
+            <div class="stat-label">วิเคราะห์ AI</div>
+            <div class="stat-value">3 ชิ้น</div>
+            <div class="stat-subtext">ควรซื้อใหม่</div>
+          </div>
+          <div class="stat-icon">🤖</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="content-card shadow-sm p-3 h-100">
+          <h5 class="fw-bold mb-3">สนับสนุนการตัดสินใจ</h5>
+          <p class="mb-2 fw-bold text-decoration-underline">Top 3 High Repair Cost (ค่าซ่อมสะสมสูงสุด)</p>
+          <table class="table table-bordered text-center align-middle mt-2">
+            <thead class="table-light">
+              <tr>
+                <th>เครื่องมือ (Asset)</th>
+                <th>ค่าซ่อมสะสม (Total Cost)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-start">1.Spectrum Analyzer (A 00787/06)</td>
+                <td>฿250,000</td>
+              </tr>
+              <tr>
+                <td class="text-start">2.Handheld Spectrum Analyzer (1-160-01848-0000)</td>
+                <td>฿120,000</td>
+              </tr>
+              <tr>
+                <td class="text-start">3.Fiber Optic OTDR Tester (1-160-00173-0000)</td>
+                <td>฿95,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="content-card shadow-sm p-3 h-100">
+          <h5 class="fw-bold">Repair VS Replace Chart</h5>
+          <p class="text-muted small mb-3">(เปรียบเทียบค่าซ่อม vs ซื้อใหม่ - ปีนี้)</p>
+          <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <div class="chart-placeholder">
+               <canvas id="myChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="content-card shadow-sm p-3">
+          <h5 class="fw-bold mb-3">กิจกรรมล่าสุด</h5>
+          <div class="recent-activity ps-3">
+            <p>26/1/2569 - เพิ่มเครื่องใหม่ : Multimeter A001</p>
+            <p>25/1/2569 - ส่งซ่อม : Caliper C023</p>
+            <p>25/1/2569 - ผู้ใช้ใหม่ : Somchai</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['ค่าซ่อม (Repair)', 'ซื้อใหม่ (Replace)'],
+      datasets: [{
+        data: [65, 35],
+        backgroundColor: ['#fd7e14', '#3b82f6'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+</script>

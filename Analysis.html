@@ -1,0 +1,44 @@
+<div class="analysis-page">
+  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
+    <div class="date-text text-white">26/1/2569</div>
+  </div>
+
+  <div class="p-4">
+    <h2 class="analysis-title mb-4">เครื่องมือวัด กอง ศว.สว. ที่ต้องการให้วิเคราะห์ว่า ซ่อม/ซื้อใหม่</h2>
+
+    <div class="search-bar-container d-flex align-items-center mb-4">
+      <div class="me-4">
+        <label class="form-label d-inline-block me-2 mb-0">Asset</label>
+        <input type="text" id="assetInput" class="form-control custom-input d-inline-block" placeholder="">
+      </div>
+      <div class="me-4">
+        <label class="form-label d-inline-block me-2 mb-0">Repair Cost</label>
+        <input type="number" id="repairCostInput" class="form-control custom-input d-inline-block" placeholder="">
+      </div>
+      <button class="btn btn-search px-4 shadow" onclick="analyzeData()">search</button>
+    </div>
+
+    <div class="result-card content-card">
+      <div id="analysisResult" class="p-4">
+        <p class="text-muted text-center mt-5">กรุณากรอกข้อมูลและกดปุ่ม Search เพื่อเริ่มการวิเคราะห์</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function analyzeData() {
+    const asset = document.getElementById('assetInput').value;
+    const cost = document.getElementById('repairCostInput').value;
+    
+    if(!asset || !cost) {
+      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+      return;
+    }
+
+    document.getElementById('analysisResult').innerHTML = '<div class="text-center mt-5"><div class="spinner-border text-primary"></div><p>กำลังวิเคราะห์ข้อมูล...</p></div>';
+    
+    // ตรงนี้สามารถเชื่อมต่อกับ google.script.run เพื่อดึงข้อมูลจาก Sheet มาคำนวณได้
+    console.log("Analyzing:", asset, "with cost:", cost);
+  }
+</script>

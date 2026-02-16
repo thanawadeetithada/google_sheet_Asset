@@ -67,8 +67,8 @@
     document.getElementById('content').innerHTML = 'กำลังโหลด...'; // แสดงสถานะโหลด
     
     google.script.run.withSuccessHandler(function(html) {
-      document.getElementById('content').innerHTML = html;
-    }).getPageHTML(pageName); 
+  document.getElementById('content').innerHTML = html;
+}).getPageHTML(pageName);
   }
 
   function logout() {
