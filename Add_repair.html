@@ -14,7 +14,7 @@
       --main-bg: #f8f9fa;
       --header-bg: #5c7cfa;
       --nav-active: #2563eb;
-      --btn-edit: #f1b418;
+      --btn-repair: #f1b418;
       --btn-cancel: #adb5bd;
     }
 
@@ -44,58 +44,64 @@
     .top-header { background: var(--header-bg); color: white; padding: 10px 20px; text-align: right; font-size: 18px; display: flex; justify-content: flex-end; align-items: center; }
     .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
 
-    /* Form UI Section */
+    /* Repair Form UI */
     .form-card {
       background: white;
       border-radius: 20px;
-      padding: 30px;
-      max-width: 800px;
+      padding: 40px;
+      max-width: 700px;
       margin: 20px auto;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
-    .form-title { font-weight: bold; font-size: 32px; margin-bottom: 10px; }
-    .form-subtitle { font-weight: bold; font-size: 18px; margin-bottom: 25px; }
+    .form-title { font-weight: bold; font-size: 32px; margin-bottom: 30px; }
+    .form-subtitle { font-weight: bold; font-size: 18px; margin-bottom: 30px; color: #000; }
 
-    .form-group-custom { margin-bottom: 20px; }
-    .form-group-custom label { font-weight: 500; color: #4b5563; margin-bottom: 8px; display: block; font-size: 14px; }
-    .form-group-custom input {
-      width: 100%;
-      padding: 12px 15px;
+    .form-row { display: flex; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .form-row label { width: 150px; font-weight: 500; font-size: 16px; margin-bottom: 5px; }
+    .form-row input {
+      flex: 1;
+      min-width: 250px;
+      padding: 10px 15px;
       border-radius: 12px;
       border: 1px solid #d1d5db;
       background-color: #fff;
       font-size: 16px;
-      color: #333;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    @media (max-width: 576px) {
+      .form-row label { width: 100%; }
+      .form-row input { width: 100%; }
     }
 
     .btn-group-custom {
       display: flex;
       justify-content: center;
       gap: 20px;
-      margin-top: 35px;
+      margin-top: 40px;
     }
 
-    .btn-edit {
-      background-color: var(--btn-edit);
+    .btn-repair {
+      background-color: var(--btn-repair);
       color: white;
       border-radius: 12px;
       padding: 10px 45px;
       font-weight: bold;
       border: none;
-      font-size: 20px;
+      font-size: 22px;
       box-shadow: 0 4px 10px rgba(241, 180, 24, 0.3);
     }
 
     .btn-cancel {
       background-color: var(--btn-cancel);
-      color: #333;
+      color: #000;
       border-radius: 12px;
       padding: 10px 45px;
       font-weight: bold;
       border: none;
-      font-size: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      font-size: 22px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
@@ -114,9 +120,9 @@
       </div>
       <nav>
         <a href="<?= getScriptUrl() ?>?p=Home" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="<?= getScriptUrl() ?>?p=Search" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+        <a href="<?= getScriptUrl() ?>?p=Search" class="nav-link active"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
         <a href="<?= getScriptUrl() ?>?p=Analysis" class="nav-link"><i class="fa-solid fa-chart-line"></i> Analysis</a>
-        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link active"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
+        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
         <a href="<?= getScriptUrl() ?>?p=User_Management" class="nav-link"><i class="fa-solid fa-users"></i> User management</a>
         <a href="#" class="nav-link mt-4 text-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
       </nav>
@@ -129,44 +135,44 @@
       </div>
 
       <div class="p-3 p-md-5">
-        <h1 class="form-title">แก้ไขข้อมูลเครื่องวัด</h1>
+        <h1 class="fw-bold mb-4">ข้อมูลการซ่อมเครื่องมือวัด</h1>
 
         <div class="form-card">
-          <h5 class="form-subtitle">ฟอร์มเพิ่มข้อมูลเครื่องมือวัด</h5>
+          <h5 class="form-subtitle">ฟอร์มเพิ่มข้อมูลการซ่อมเครื่องมือวัด</h5>
           
-          <div class="form-group-custom">
-            <label>DESCRIPTION</label>
-            <input type="text" value="Frequency Counter">
+          <div class="form-row">
+            <label>ชื่อเครื่องมือวัด</label>
+            <input type="text" id="equipmentName">
           </div>
 
-          <div class="form-group-custom">
-            <label>MODEL</label>
-            <input type="text" value="1856D">
+          <div class="form-row">
+            <label>ว/ด/ป ที่ซ่อม</label>
+            <input type="text" id="repairDate" placeholder="วว/ดด/ปปปป">
           </div>
 
-          <div class="form-group-custom">
-            <label>MANUFACTURER</label>
-            <input type="text" value="BK Precision">
+          <div class="form-row">
+            <label>ว/ด/ป ที่ซ่อมเสร็จ</label>
+            <input type="text" id="finishDate" placeholder="วว/ดด/ปปปป">
           </div>
 
-          <div class="form-group-custom">
-            <label>ASSET</label>
-            <input type="text" value="A 00835/07">
+          <div class="form-row">
+            <label>อาการเสีย</label>
+            <input type="text" id="issue">
           </div>
 
-          <div class="form-group-custom">
-            <label>SERIALNUM</label>
-            <input type="text" value="5020359">
+          <div class="form-row">
+            <label>ราคาที่ซ่อม</label>
+            <input type="text" id="price">
           </div>
 
-          <div class="form-group-custom">
-            <label>Status</label>
-            <input type="text" value="Active">
+          <div class="form-row">
+            <label>บริษัทที่ซ่อม</label>
+            <input type="text" id="company">
           </div>
 
           <div class="btn-group-custom">
-            <button class="btn-edit">Edit</button>
-            <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="btn btn-cancel">Cancel</a>
+            <button class="btn-repair">Repair</button>
+            <button class="btn-cancel" onclick="history.back()">Cancel</button>
           </div>
         </div>
       </div>

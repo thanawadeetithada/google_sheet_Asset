@@ -14,7 +14,7 @@
       --main-bg: #f8f9fa;
       --header-bg: #5c7cfa;
       --nav-active: #2563eb;
-      --btn-edit: #f1b418;
+      --btn-add: #22c55e;
       --btn-cancel: #adb5bd;
     }
 
@@ -44,7 +44,7 @@
     .top-header { background: var(--header-bg); color: white; padding: 10px 20px; text-align: right; font-size: 18px; display: flex; justify-content: flex-end; align-items: center; }
     .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
 
-    /* Form UI Section */
+    /* Form UI */
     .form-card {
       background: white;
       border-radius: 20px;
@@ -54,7 +54,7 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
-    .form-title { font-weight: bold; font-size: 32px; margin-bottom: 10px; }
+    .form-title { font-weight: bold; font-size: 32px; margin-bottom: 5px; }
     .form-subtitle { font-weight: bold; font-size: 18px; margin-bottom: 25px; }
 
     .form-group-custom { margin-bottom: 20px; }
@@ -65,8 +65,8 @@
       border-radius: 12px;
       border: 1px solid #d1d5db;
       background-color: #fff;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
       font-size: 16px;
-      color: #333;
     }
 
     .btn-group-custom {
@@ -76,15 +76,15 @@
       margin-top: 35px;
     }
 
-    .btn-edit {
-      background-color: var(--btn-edit);
+    .btn-add {
+      background-color: var(--btn-add);
       color: white;
       border-radius: 12px;
       padding: 10px 45px;
       font-weight: bold;
       border: none;
       font-size: 20px;
-      box-shadow: 0 4px 10px rgba(241, 180, 24, 0.3);
+      box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2);
     }
 
     .btn-cancel {
@@ -129,43 +129,43 @@
       </div>
 
       <div class="p-3 p-md-5">
-        <h1 class="form-title">แก้ไขข้อมูลเครื่องวัด</h1>
+        <h1 class="form-title">เพิ่มข้อมูลเครื่องวัด</h1>
 
         <div class="form-card">
           <h5 class="form-subtitle">ฟอร์มเพิ่มข้อมูลเครื่องมือวัด</h5>
           
           <div class="form-group-custom">
             <label>DESCRIPTION</label>
-            <input type="text" value="Frequency Counter">
+            <input type="text" id="desc">
           </div>
 
           <div class="form-group-custom">
             <label>MODEL</label>
-            <input type="text" value="1856D">
+            <input type="text" id="model">
           </div>
 
           <div class="form-group-custom">
             <label>MANUFACTURER</label>
-            <input type="text" value="BK Precision">
+            <input type="text" id="mfr">
           </div>
 
           <div class="form-group-custom">
             <label>ASSET</label>
-            <input type="text" value="A 00835/07">
+            <input type="text" id="asset">
           </div>
 
           <div class="form-group-custom">
             <label>SERIALNUM</label>
-            <input type="text" value="5020359">
+            <input type="text" id="serial">
           </div>
 
           <div class="form-group-custom">
             <label>Status</label>
-            <input type="text" value="Active">
+            <input type="text" id="status">
           </div>
 
           <div class="btn-group-custom">
-            <button class="btn-edit">Edit</button>
+            <button class="btn-add">Add</button>
             <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="btn btn-cancel">Cancel</a>
           </div>
         </div>

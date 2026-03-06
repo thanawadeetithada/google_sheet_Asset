@@ -1,127 +1,238 @@
-<div class="home-container">
- <div class="analysis-header d-flex justify-content-end align-items-center px-4">
-    <div class="date-text text-white">26/1/2569</div>
-  </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <div class="p-4">
-    <h1 class="fw-bold mb-4">ภาพรวมระบบ Asset Management</h1>
+  <style>
+    :root {
+      --sidebar-bg: #111827;
+      --main-bg: #f8f9fa;
+      --card-blue: #60a5fa;
+      --card-pink: #fecaca;
+      --card-green: #86efac;
+      --card-orange: #fed7aa;
+    }
 
-    <div class="row g-3 mb-4">
-      <div class="col-md-3">
-        <div class="stat-card bg-blue shadow-sm p-3 d-flex justify-content-between align-items-center">
-          <div>
-            <div class="stat-label">อุปกรณ์ทั้งหมด</div>
-            <div class="stat-value">256 ชิ้น</div>
-          </div>
-          <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
-        </div>
+    body { font-family: 'Sarabun', sans-serif; background-color: var(--main-bg); margin: 0; overflow-x: hidden; }
+
+    /* Sidebar Responsive Logic */
+    .sidebar { 
+      width: 280px; 
+      background-color: var(--sidebar-bg); 
+      min-height: 100vh; 
+      color: white; 
+      position: fixed; 
+      z-index: 1000;
+      transition: all 0.3s;
+      left: 0;
+    }
+
+    /* Main Content Responsive Logic */
+    .main-content { 
+      margin-left: 280px; 
+      width: calc(100% - 280px); 
+      transition: all 0.3s;
+    }
+
+    /* Mobile State */
+    @media (max-width: 992px) {
+      .sidebar { left: -280px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; width: 100%; }
+      .mobile-toggle { display: block !important; }
+    }
+
+    .user-profile { padding: 40px 20px; text-align: center; position: relative; }
+    .user-avatar { width: 80px; height: 80px; background: #ddd; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #666; overflow: hidden; }
+    
+    .nav-link { color: #9ca3af; padding: 15px 25px; display: flex; align-items: center; text-decoration: none; transition: 0.3s; font-size: 18px; }
+    .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+    .nav-link.active { background: #2563eb; color: white; border-radius: 0 50px 50px 0; margin-right: 20px; }
+    .nav-link i { width: 30px; font-size: 20px; }
+
+    .top-header { background: #5c7cfa; color: white; padding: 10px 20px; text-align: right; font-size: 18px; display: flex; justify-content: flex-end; align-items: center; }
+    
+    /* Stat Cards */
+    .stat-card { border-radius: 15px; padding: 20px; color: #1f2937; height: 100%; position: relative; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .stat-label { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+    .stat-value { font-size: 22px; font-weight: 800; }
+    .stat-icon { position: absolute; bottom: 15px; right: 15px; font-size: 28px; opacity: 0.5; }
+
+    .bg-blue { background-color: var(--card-blue); }
+    .bg-pink { background-color: var(--card-pink); }
+    .bg-green { background-color: var(--card-green); }
+    .bg-orange { background-color: var(--card-orange); }
+
+    .content-card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: 100%; }
+    
+    /* Table Responsive */
+    .table-responsive { border: none; }
+    
+    .activity-log { background: white; border-radius: 15px; padding: 20px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .activity-item { margin-bottom: 8px; font-size: 15px; color: #374151; border-left: 3px solid #5c7cfa; padding-left: 10px; }
+
+    .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
+    .overlay.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="d-flex">
+    <div class="sidebar" id="sidebar">
+      <div class="user-profile">
+        <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+        <h4 class="mt-2 fw-bold text-decoration-underline">John Doe</h4>
       </div>
-      <div class="col-md-3">
-        <div class="stat-card bg-pink shadow-sm p-3 d-flex justify-content-between align-items-center">
-          <div>
-            <div class="stat-label">ส่งซ่อม</div>
-            <div class="stat-value">12 ชิ้น</div>
-          </div>
-          <div class="stat-icon"><i class="fa-solid fa-wrench"></i></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="stat-card bg-green shadow-sm p-3 d-flex justify-content-between align-items-center">
-          <div>
-            <div class="stat-label">ค่าใช้จ่ายซ่อมบำรุงเดือนนี้</div>
-            <div class="stat-value">฿15,400</div>
-          </div>
-          <div class="stat-icon"><i class="fa-solid fa-money-bill-1-wave"></i></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="stat-card bg-orange shadow-sm p-3 d-flex justify-content-between align-items-center">
-          <div>
-            <div class="stat-label">วิเคราะห์ AI</div>
-            <div class="stat-value">3 ชิ้น</div>
-            <div class="stat-subtext">ควรซื้อใหม่</div>
-          </div>
-          <div class="stat-icon">🤖</div>
-        </div>
-      </div>
+     <nav>
+        <a href="<?= getScriptUrl() ?>?p=Home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="<?= getScriptUrl() ?>?p=Search" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+        <a href="<?= getScriptUrl() ?>?p=Analysis" class="nav-link"><i class="fa-solid fa-chart-line"></i> Analysis</a>
+        <a href="<?= getScriptUrl() ?>?p=Pending_Status" class="nav-link"><i class="fa-solid fa-hourglass"></i> Pending status</a>
+        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
+        <a href="<?= getScriptUrl() ?>?p=User_Management" class="nav-link"><i class="fa-solid fa-users"></i> User management</a>
+        <a href="#" class="nav-link mt-4 text-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
     </div>
 
-    <div class="row g-4 mb-4">
-      <div class="col-md-6">
-        <div class="content-card shadow-sm p-3 h-100">
-          <h5 class="fw-bold mb-3">สนับสนุนการตัดสินใจ</h5>
-          <p class="mb-2 fw-bold text-decoration-underline">Top 3 High Repair Cost (ค่าซ่อมสะสมสูงสุด)</p>
-          <table class="table table-bordered text-center align-middle mt-2">
-            <thead class="table-light">
-              <tr>
-                <th>เครื่องมือ (Asset)</th>
-                <th>ค่าซ่อมสะสม (Total Cost)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-start">1.Spectrum Analyzer (A 00787/06)</td>
-                <td>฿250,000</td>
-              </tr>
-              <tr>
-                <td class="text-start">2.Handheld Spectrum Analyzer (1-160-01848-0000)</td>
-                <td>฿120,000</td>
-              </tr>
-              <tr>
-                <td class="text-start">3.Fiber Optic OTDR Tester (1-160-00173-0000)</td>
-                <td>฿95,000</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="main-content">
+      <div class="top-header">
+        <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <span id="currentDate"></span> 
       </div>
 
-      <div class="col-md-6">
-        <div class="content-card shadow-sm p-3 h-100">
-          <h5 class="fw-bold">Repair VS Replace Chart</h5>
-          <p class="text-muted small mb-3">(เปรียบเทียบค่าซ่อม vs ซื้อใหม่ - ปีนี้)</p>
-          <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-            <div class="chart-placeholder">
-               <canvas id="myChart"></canvas>
+      <div class="p-3 p-md-5">
+        <h2 class="fw-bold mb-4">ภาพรวมระบบ Asset Management</h2>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3">
+            <div class="stat-card bg-blue">
+              <div class="stat-label">อุปกรณ์ทั้งหมด</div>
+              <div class="stat-value">256 ชิ้น</div>
+              <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card bg-pink">
+              <div class="stat-label">ส่งซ่อม</div>
+              <div class="stat-value">12 ชิ้น</div>
+              <div class="stat-icon"><i class="fa-solid fa-wrench"></i></div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card bg-green">
+              <div class="stat-label">ค่าซ่อมเดือนนี้</div>
+              <div class="stat-value">฿15,400</div>
+              <div class="stat-icon">💵</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card bg-orange">
+              <div class="stat-label">วิเคราะห์ AI</div>
+              <div class="stat-value">3 ชิ้น</div>
+              <small class="d-block fw-bold">ควรซื้อใหม่</small>
+              <div class="stat-icon">🤖</div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-12">
-        <div class="content-card shadow-sm p-3">
-          <h5 class="fw-bold mb-3">กิจกรรมล่าสุด</h5>
-          <div class="recent-activity ps-3">
-            <p>26/1/2569 - เพิ่มเครื่องใหม่ : Multimeter A001</p>
-            <p>25/1/2569 - ส่งซ่อม : Caliper C023</p>
-            <p>25/1/2569 - ผู้ใช้ใหม่ : Somchai</p>
+        <div class="row g-4">
+          <div class="col-12 col-xl-7">
+            <div class="content-card">
+              <h5 class="fw-bold mb-3">สนับสนุนการตัดสินใจ</h5>
+              <p class="small fw-bold text-primary">Top 3 High Repair Cost (ค่าซ่อมสะสมสูงสุด)</p>
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr class="text-center">
+                      <th class="text-start">เครื่องมือ (Asset)</th>
+                      <th>ค่าซ่อมสะสม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="small">1.Spectrum Analyzer (A 00787/06)</td>
+                      <td class="text-center fw-bold">฿250,000</td>
+                    </tr>
+                    <tr>
+                      <td class="small">2.Handheld Spectrum Analyzer...</td>
+                      <td class="text-center fw-bold">฿120,000</td>
+                    </tr>
+                    <tr>
+                      <td class="small">3.Fiber Optic OTDR Tester...</td>
+                      <td class="text-center fw-bold">฿95,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
+          <div class="col-12 col-xl-5">
+            <div class="content-card">
+              <h5 class="fw-bold mb-1">Repair VS Replace</h5>
+              <p class="text-muted small mb-3">เปรียบเทียบค่าซ่อม vs ซื้อใหม่</p>
+              <div style="height: 250px;">
+                <canvas id="repairChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="activity-log">
+          <h5 class="fw-bold mb-3">รอดำเนินการจัดซื้อ / ส่งซ่อม</h5>
+          <div class="activity-item">26/1/2569 - เพิ่มเครื่องมือใหม่ : Multimeter A001</div>
+          <div class="activity-item">25/1/2569 - ส่งซ่อม : Caliper C023</div>
+          <div class="activity-item">25/1/2569 - ผู้ใช้ใหม่ : Somchai</div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const ctx = document.getElementById('myChart');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: ['ค่าซ่อม (Repair)', 'ซื้อใหม่ (Replace)'],
-      datasets: [{
-        data: [65, 35],
-        backgroundColor: ['#fd7e14', '#3b82f6'],
-        borderWidth: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'bottom' }
+  <script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
+  }
+
+  // ใช้ window.onload เพียงครั้งเดียวแล้วใส่คำสั่งทั้งหมดไว้ข้างใน
+  window.onload = function() {
+    
+    // 1. ส่วนแสดงวันที่ปัจจุบัน
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear() + 543; // แปลงเป็น พ.ศ.
+    document.getElementById('currentDate').innerText = `${day}/${month}/${year}`;
+
+    // 2. ส่วนสร้าง Chart
+    const ctx = document.getElementById('repairChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['ค่าซ่อม (Repair)', 'ซื้อใหม่ (Replace)'],
+        datasets: [{
+          data: [65, 35],
+          backgroundColor: ['#f97316', '#3b82f6'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } }
+        }
       }
-    }
-  });
+    });
+  };
 </script>
+</body>
+</html>

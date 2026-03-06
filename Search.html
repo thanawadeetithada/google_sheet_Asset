@@ -1,64 +1,282 @@
-<div class="search-page-container">
-  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
-    <div class="date-text text-white">26/1/2569</div>
-  </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <div class="p-4">
-    <h1 class="fw-bold mb-4">รายการเครื่องมือวัด กอง ศว.สว.</h1>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <div class="d-flex align-items-center mb-4">
-      <input type="text" class="form-control custom-search-input me-2" placeholder="คำค้นหา...">
-      <button class="btn btn-search px-4">search</button>
+  <style>
+    :root {
+      --sidebar-bg: #111827;
+      --main-bg: #f8f9fa;
+      --header-bg: #5c7cfa;
+      --search-btn: #1e3a8a;
+      --repair-btn: #f1b418;
+    }
+
+    body { font-family: 'Sarabun', sans-serif; background-color: var(--main-bg); margin: 0; overflow-x: hidden; }
+
+    /* Sidebar logic */
+    .sidebar { 
+      width: 280px; background-color: var(--sidebar-bg); min-height: 100vh; 
+      color: white; position: fixed; z-index: 1000; transition: 0.3s; left: 0;
+    }
+    .main-content { margin-left: 280px; width: calc(100% - 280px); transition: 0.3s; }
+
+    @media (max-width: 992px) {
+      .sidebar { left: -280px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; width: 100%; }
+      .mobile-toggle { display: block !important; }
+    }
+
+    /* Sidebar Elements */
+    .user-profile { padding: 40px 20px; text-align: center; position: relative; }
+    .user-avatar { 
+      width: 80px; height: 80px; background: #ddd; border-radius: 50%; 
+      margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; 
+      font-size: 40px; color: #666; overflow: hidden; 
+    }
+    .nav-link { color: #9ca3af; padding: 15px 25px; display: flex; align-items: center; text-decoration: none; transition: 0.3s; font-size: 18px; }
+    .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+    .nav-link.active { background: #2563eb; color: white; border-radius: 0 50px 50px 0; margin-right: 20px; }
+    .nav-link i { width: 30px; font-size: 20px; }
+
+    /* UI Components */
+    .top-header { background: var(--header-bg); color: white; padding: 10px 20px; text-align: right; font-size: 18px; display: flex; justify-content: flex-end; align-items: center; }
+    .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+    
+    /* ชุด Filter Card ใหม่ */
+    .filter-card { background: white; border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #ddd; margin-bottom: 25px; }
+    .custom-input, .custom-input-group .form-control, .custom-input-group .input-group-text { border-color: #ddd; border-radius: 8px; padding: 10px 15px; color: #4b5563; }
+    .custom-input-group .input-group-text { border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-right: none; background: transparent; }
+    .custom-input-group .form-control { border-left: none; border-top-right-radius: 8px; border-bottom-right-radius: 8px; box-shadow: none; }
+    .custom-input:focus, .custom-input-group .form-control:focus { border-color: var(--header-bg); box-shadow: 0 0 0 0.2rem rgba(92, 124, 250, 0.15); }
+    .btn-search { background-color: var(--search-btn); color: white; border-radius: 8px; padding: 10px 20px; font-weight: bold; border: none; transition: 0.3s; }
+    .btn-search:hover { background-color: #152c6b; color: white; transform: translateY(-1px); }
+
+    .btn-repair { background-color: var(--repair-btn); color: white; border-radius: 12px; font-weight: bold; border: none; padding: 10px 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+    /* Table UI */
+    .table-container { background: white; border: 1px solid #000; overflow: hidden; }
+    .table { margin-bottom: 0; }
+    .table th { background-color: #f8f9fa; border: 1px solid #000; text-align: center; padding: 12px 5px; font-size: 14px; }
+    .table td { border: 1px solid #000; vertical-align: middle; padding: 10px 5px; font-size: 13px; }
+    
+    .btn-action { padding: 4px 8px; font-size: 14px; margin: 0 2px; }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
+    .overlay.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="d-flex">
+    <div class="sidebar" id="sidebar">
+      <div class="user-profile">
+        <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+        <h4 class="mt-2 fw-bold text-decoration-underline">John Doe</h4>
+      </div>
+     <nav>
+        <a href="<?= getScriptUrl() ?>?p=Home" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="<?= getScriptUrl() ?>?p=Search" class="nav-link active"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+        <a href="<?= getScriptUrl() ?>?p=Analysis" class="nav-link"><i class="fa-solid fa-chart-line"></i> Analysis</a>
+        <a href="<?= getScriptUrl() ?>?p=Pending_Status" class="nav-link"><i class="fa-solid fa-hourglass"></i> Pending status</a>
+        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
+        <a href="<?= getScriptUrl() ?>?p=User_Management" class="nav-link"><i class="fa-solid fa-users"></i> User management</a>
+        <a href="#" class="nav-link mt-4 text-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
     </div>
 
-    <button class="btn btn-warning text-white fw-bold px-4 mb-4 shadow-sm" style="border-radius: 12px; background-color: #f1b418;">
-      + Repair equipment
-    </button>
+    <div class="main-content">
+      <div class="top-header">
+        <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <span id="currentDate"></span> 
+      </div>
 
-    <h4 class="fw-bold mb-3">ประวัติการซ่อมบำรุง</h4>
+      <div class="p-3 p-md-5">
+        <h1 class="fw-bold mb-4">ประวัติการซ่อมเครื่องมือวัด กอง ศว.สว.</h1>
 
-    <div class="content-card shadow-sm overflow-hidden">
-      <table class="table table-bordered mb-0 align-middle text-center">
-        <thead class="table-light">
-          <tr>
-            <th style="width: 25%;">Description</th>
-            <th>จำนวนครั้งการซ่อม</th>
-            <th>ว/ด/ป ที่ซ่อมเสร็จ</th>
-            <th>อาการเสีย</th>
-            <th>ราคาที่ซ่อม</th>
-            <th>บริษัทซ่อม</th>
-            <th style="width: 15%;">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-start ps-3">Communication System Analyzer</td>
-            <td>1</td>
-            <td>01/02/2026</td>
-            <td>หน้าจาค้างหรือ</td>
-            <td>2,000</td>
-            <td>บริษัทซ่อม</td>
-            <td>
-              <button class="btn btn-primary btn-sm rounded-1"><i class="fa-solid fa-eye"></i></button>
-              <button class="btn btn-warning btn-sm rounded-1 text-white"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn btn-danger btn-sm rounded-1"><i class="fa-solid fa-trash"></i></button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-start ps-3">Frequency Counter</td>
-            <td>2</td>
-            <td>01/01/2026</td>
-            <td>เปิดไม่ติด</td>
-            <td>1,200</td>
-            <td>บริษัทซ่อม</td>
-            <td>
-              <button class="btn btn-primary btn-sm rounded-1"><i class="fa-solid fa-eye"></i></button>
-              <button class="btn btn-warning btn-sm rounded-1 text-white"><i class="fa-solid fa-pen"></i></button>
-              <button class="btn btn-danger btn-sm rounded-1"><i class="fa-solid fa-trash"></i></button>
-            </td>
-          </tr>
-          </tbody>
-      </table>
+        <div class="filter-card">
+          <div class="row g-2 align-items-center">
+            
+            <div class="col-12 col-xl-3 col-md-4">
+              <div class="input-group custom-input-group">
+                <span class="input-group-text text-muted">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" class="form-control ps-0" placeholder="ค้นหาเครื่องมือ, อาการเสีย...">
+              </div>
+            </div>
+
+            <div class="col-12 col-xl-2 col-md-4">
+              <select class="form-select custom-input">
+                <option value="" selected>สถานะ: ทั้งหมด</option>
+                <option value="success">ซ่อมเสร็จแล้ว</option>
+                <option value="pending">รออะไหล่</option>
+                <option value="repairing">กำลังซ่อม</option>
+              </select>
+            </div>
+
+            <div class="col-6 col-xl-2 col-md-4">
+              <input type="date" class="form-control custom-input" title="วันที่เริ่มต้น">
+            </div>
+
+            <div class="col-6 col-xl-2 col-md-6">
+              <input type="date" class="form-control custom-input" title="วันที่สิ้นสุด">
+            </div>
+
+            <div class="col-12 col-xl-3 col-md-6">
+              <button class="btn btn-search w-100">
+                <i class="fa-solid fa-filter"></i> Search
+              </button>
+            </div>
+
+          </div>
+        </div>
+        <a href="<?= getScriptUrl() ?>?p=Add_repair" class="btn btn-repair mb-4">+ Repair equipment</a>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 20%;">DESCRIPTION</th>
+                <th style="width: 10%;">ASSET</th>
+                <th style="width: 10%;">SERIALNUM</th>
+                <th style="width: 9%;">จำนวนครั้งการซ่อม</th>
+                <th style="width: 9%;">ว/ด/ป ที่ซ่อมเสร็จ</th>
+                <th style="width: 15%;">อาการเสีย</th>
+                <th style="width: 8%;">ราคาที่ซ่อม</th>
+                <th style="width: 9%;">บริษัทซ่อม</th>
+                <th style="width: 10%;">Action</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <tr>
+                <td class="text-start">Communication System Analyzer</td>
+                <td>A 15123</td>
+                <td>s 1sas23</td>
+                <td>1</td>
+                <td>01/02/2026</td>
+                <td>หน้าจอค้างหรือ</td>
+                <td>2,000</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                 <a href="<?= getScriptUrl() ?>?p=View_search_detail" class="btn btn-primary btn-action">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                  <a href="<?= getScriptUrl() ?>?p=Edit_repair" class="btn btn-warning btn-action text-white">
+                    <i class="fa-solid fa-pen"></i>
+                  </a>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-start">Frequency Counter</td>
+                <td>A 15123</td>
+                <td>s 1sas23</td>
+                <td>2</td>
+                <td>01/01/2026</td>
+                <td>เปิดไม่ติด</td>
+                <td>1,200</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-start">Digital Multimeter</td>
+                <td>A 15123</td>
+                <td>s 1sas23</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>ค่าวัดไม่นิ่ง</td>
+                <td>3,500</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-start">ESG Vector Signal Generator</td>
+                <td>A 15123</td>
+                <td>s 1sas23</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>สัญญาณที่ส่งออกเบากว่าค่าที่ตั้งไว้</td>
+                <td>500</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-start">USB Peak & Average Power Sensor</td>
+                <td>A 15123</td>
+                <td>s 1sas23</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>ไม่สามารถเซ็ตศูนย์</td>
+                <td>1,200</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-start">Handheld Spectrum Analyzer</td>
+                <td>A 15123</td>
+                <td>s 1sas23</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>หน้าจอแตก</td>
+                <td>1,500</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+
+    // ฟังก์ชัน logout เบื้องต้น
+    function logout() {
+      if(confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
+         window.top.location.href = "https://www.google.com";
+      }
+    }
+
+    window.onload = function() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear() + 543; // แปลงเป็น พ.ศ.
+      document.getElementById('currentDate').innerText = `${day}/${month}/${year}`;
+    };
+  </script>
+</body>
+</html>

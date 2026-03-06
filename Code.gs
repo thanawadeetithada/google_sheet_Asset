@@ -1,32 +1,14 @@
-function doGet() {
-  return HtmlService.createTemplateFromFile('Index')
+function doGet(e) {
+  // รับค่าหน้าจาก URL ถ้าไม่มีค่าหรือเป็นค่าว่างให้ไปที่ Home
+  var page = e.parameter.p || 'Home';
+  
+  return HtmlService.createTemplateFromFile(page)
       .evaluate()
       .setTitle('ระบบจัดการอุปกรณ์')
-      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
-function getPageHTML(pageName) {
-  try {
-    return HtmlService.createTemplateFromFile(pageName).evaluate().getContent();
-  } catch (e) {
-    return "<div class='alert alert-danger'>ไม่พบไฟล์ HTML ที่ชื่อว่า: <b>" + pageName + "</b><br>โปรดตรวจสอบการตั้งชื่อไฟล์ที่แถบด้านซ้ายมือ</div>";
-  }
-}
-
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-
-function getUserData() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName('User');
-  const values = sheet.getDataRange().getValues();
-  const header = values.shift(); 
-  return values; 
-}
-
-function getEquipmentData() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName('Equipment List');
-  return sheet.getDataRange().getValues();
+function getScriptUrl() {
+  return ScriptApp.getService().getUrl();
 }

@@ -13,19 +13,18 @@
       --sidebar-bg: #111827;
       --main-bg: #f8f9fa;
       --header-bg: #5c7cfa;
-      --nav-active: #2563eb;
       --search-btn: #1e3a8a;
-      --add-btn: #22c55e;
+      --repair-btn: #f1b418;
     }
 
     body { font-family: 'Sarabun', sans-serif; background-color: var(--main-bg); margin: 0; overflow-x: hidden; }
 
-    /* Sidebar & Layout Responsive */
+    /* Sidebar logic */
     .sidebar { 
       width: 280px; background-color: var(--sidebar-bg); min-height: 100vh; 
       color: white; position: fixed; z-index: 1000; transition: 0.3s; left: 0;
     }
-    .main-content { margin-left: 280px; width: calc(100% - 280px); transition: 0.3s; min-height: 100vh; }
+    .main-content { margin-left: 280px; width: calc(100% - 280px); transition: 0.3s; }
 
     @media (max-width: 992px) {
       .sidebar { left: -280px; }
@@ -34,7 +33,7 @@
       .mobile-toggle { display: block !important; }
     }
 
-    /* Sidebar Content */
+    /* Sidebar Elements */
     .user-profile { padding: 40px 20px; text-align: center; position: relative; }
     .user-avatar { 
       width: 80px; height: 80px; background: #ddd; border-radius: 50%; 
@@ -43,29 +42,23 @@
     }
     .nav-link { color: #9ca3af; padding: 15px 25px; display: flex; align-items: center; text-decoration: none; transition: 0.3s; font-size: 18px; }
     .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
-    .nav-link.active { background: var(--nav-active); color: white; border-radius: 0 50px 50px 0; margin-right: 20px; }
+    .nav-link.active { background: #2563eb; color: white; border-radius: 0 50px 50px 0; margin-right: 20px; }
     .nav-link i { width: 30px; font-size: 20px; }
 
-    /* Main UI Elements */
+    /* UI Components */
     .top-header { background: var(--header-bg); color: white; padding: 10px 20px; text-align: right; font-size: 18px; display: flex; justify-content: flex-end; align-items: center; }
     .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
     
-    .page-title { font-weight: bold; margin-bottom: 25px; font-size: 28px; color: #000; }
-
-    /* Search & Add Section */
-    .action-bar { display: flex; gap: 15px; margin-bottom: 30px; align-items: center; flex-wrap: wrap; }
-    .search-input { 
-      border-radius: 15px; border: 1px solid #ddd; padding: 10px 20px; 
-      min-width: 300px; flex-grow: 1; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .btn-search { background-color: var(--search-btn); color: white; border-radius: 12px; padding: 8px 30px; font-weight: bold; border: none; }
-    .btn-add { background-color: var(--add-btn); color: white; border-radius: 12px; padding: 8px 25px; font-weight: bold; border: none; font-size: 18px; }
+    .custom-search-container { display: flex; gap: 10px; margin-bottom: 25px; max-width: 600px; }
+    .custom-search-input { border-radius: 15px; border: 1px solid #ddd; padding: 10px 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+    .btn-search { background-color: var(--search-btn); color: white; border-radius: 12px; padding: 8px 30px; font-weight: bold; }
+    .btn-repair { background-color: var(--repair-btn); color: white; border-radius: 12px; font-weight: bold; border: none; padding: 10px 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 
     /* Table UI */
     .table-container { background: white; border: 1px solid #000; overflow: hidden; }
     .table { margin-bottom: 0; }
-    .table th { background-color: #f8f9fa; border: 1px solid #000; text-align: center; padding: 12px 5px; font-size: 13px; font-weight: bold; vertical-align: middle; }
-    .table td { border: 1px solid #000; vertical-align: middle; padding: 10px 5px; font-size: 12px; text-align: center; }
+    .table th { background-color: #f8f9fa; border: 1px solid #000; text-align: center; padding: 12px 5px; font-size: 14px; }
+    .table td { border: 1px solid #000; vertical-align: middle; padding: 10px 5px; font-size: 13px; }
     
     .btn-action { padding: 4px 8px; font-size: 14px; margin: 0 2px; }
     .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
@@ -86,142 +79,122 @@
         <a href="<?= getScriptUrl() ?>?p=Home" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
         <a href="<?= getScriptUrl() ?>?p=Search" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
         <a href="<?= getScriptUrl() ?>?p=Analysis" class="nav-link"><i class="fa-solid fa-chart-line"></i> Analysis</a>
-        <a href="<?= getScriptUrl() ?>?p=Pending_Status" class="nav-link"><i class="fa-solid fa-hourglass"></i> Pending status</a> 
-        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link active"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
+        <a href="<?= getScriptUrl() ?>?p=Pending_Status" class="nav-link active"><i class="fa-solid fa-hourglass"></i> Pending status</a>
+        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
         <a href="<?= getScriptUrl() ?>?p=User_Management" class="nav-link"><i class="fa-solid fa-users"></i> User management</a>
         <a href="#" class="nav-link mt-4 text-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
       </nav>
     </div>
 
     <div class="main-content">
-      <div class="top-header">
+     <div class="top-header">
         <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
         <span id="currentDate"></span> 
       </div>
 
       <div class="p-3 p-md-5">
-        <h1 class="page-title">รายการเครื่องมือวัด กอง ศว.สว. ทั้งหมด</h1>
+        <h1 class="fw-bold mb-4">รอดำเนินการสั่งซื้อ / ซ่อมบำรุงรายการเครื่องมือวัด กอง ศว.สว.</h1>
 
-        <div class="action-bar">
-          <input type="text" class="search-input" placeholder="คำค้นหา...">
+        <div class="custom-search-container">
+          <input type="text" class="form-control custom-search-input" placeholder="คำค้นหา...">
           <button class="btn btn-search">search</button>
-          <a href="<?= getScriptUrl() ?>?p=Add_equipment" class="btn btn-add">+ Add Equipment</a>
         </div>
 
         <div class="table-responsive">
           <table class="table">
             <thead>
               <tr>
-                <th>DESCRIPTION</th>
-                <th>MODEL</th>
-                <th>MANUFACTURER</th>
-                <th>ASSET</th>
-                <th>SERIAL</th>
-                <th>Status</th>
-                <th>Action</th>
-                <th>Maintenance Record</th>
+                <th style="width: 20%;">Description</th>
+                <th style="width: 10%;">จำนวนครั้งการซ่อม</th>
+                <th style="width: 15%;">ว/ด/ป ที่ซ่อมเสร็จ</th>
+                <th style="width: 15%;">อาการเสีย</th>
+                <th style="width: 12%;">ราคาที่ซ่อม</th>
+                <th style="width: 13%;">บริษัทซ่อม</th>
+                <th style="width: 15%;">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
               <tr>
-                <td class="text-start">Frequency Counter</td>
-                <td>1856D</td>
-                <td>BK Precision</td>
-                <td>A 00835 /07</td>
-                <td>5020359</td>
-                <td>Active</td>
+                <td class="text-start">Communication System Analyzer</td>
+                <td>1</td>
+                <td>01/02/2026</td>
+                <td>หน้าจอค้างหรือ</td>
+                <td>2,000</td>
+                <td>บริษัทซ่อม</td>
                 <td>
-                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
-                  <a href="<?= getScriptUrl() ?>?p=Edit_equipment" class="btn btn-warning btn-action text-white">
+                 <a href="<?= getScriptUrl() ?>?p=View_search_detail" class="btn btn-primary btn-action">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                  <a href="<?= getScriptUrl() ?>?p=Edit_repair" class="btn btn-warning btn-action text-white">
                     <i class="fa-solid fa-pen"></i>
                   </a>
                   <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
                 </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
-              </tr>
-              <tr>
-                <td class="text-start">Peak Power Meter</td>
-                <td>E4416A</td>
-                <td>Agilent</td>
-                <td>A 00359 /05</td>
-                <td>GB4129 3323</td>
-                <td>Active</td>
-                <td>
-                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
-                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
-                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
-                </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
               </tr>
               <tr>
                 <td class="text-start">Frequency Counter</td>
-                <td>1856D</td>
-                <td>BK Precision</td>
-                <td>A 00835 /07</td>
-                <td>5020359</td>
-                <td>Active</td>
+                <td>2</td>
+                <td>01/01/2026</td>
+                <td>เปิดไม่ติด</td>
+                <td>1,200</td>
+                <td>บริษัทซ่อม</td>
                 <td>
                   <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
                   <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
                   <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
                 </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
-              </tr>
-              <tr>
-                <td class="text-start">Coaxial Directional Coupler</td>
-                <td>3002-20</td>
-                <td>Motorola</td>
-                <td>HY-SE-008</td>
-                <td>66701</td>
-                <td>Active</td>
-                <td>
-                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
-                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
-                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
-                </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
-              </tr>
-              <tr>
-                <td class="text-start">Attenuator ( 25 Watts 10 dB )</td>
-                <td>HFP-525-4/10 NM /NF-R</td>
-                <td>Trilithic Inc</td>
-                <td>HY-SE-015</td>
-                <td>43608</td>
-                <td>Active</td>
-                <td>
-                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
-                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
-                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
-                </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
               </tr>
               <tr>
                 <td class="text-start">Digital Multimeter</td>
-                <td>U1253B</td>
-                <td>Keysight</td>
-                <td>1-290-97875-0000</td>
-                <td>MY563 40418</td>
-                <td>Active</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>ค่าวัดไม่นิ่ง</td>
+                <td>3,500</td>
+                <td>บริษัทซ่อม</td>
                 <td>
                   <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
                   <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
                   <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
                 </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
               </tr>
               <tr>
-                <td class="text-start">Clamp Meter</td>
-                <td>376</td>
-                <td>Fluke</td>
-                <td>1-290-92766-0000</td>
-                <td>319600 99WS</td>
-                <td>Active</td>
+                <td class="text-start">ESG Vector Signal Generator</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>สัญญาณที่ส่งออกเบากว่าค่าที่ตั้งไว้</td>
+                <td>500</td>
+                <td>บริษัทซ่อม</td>
                 <td>
                   <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
                   <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
                   <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
                 </td>
-                <td class="text-decoration-underline text-primary" style="cursor:pointer">Click</td>
+              </tr>
+              <tr>
+                <td class="text-start">USB Peak & Average Power Sensor</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>ไม่สามารถเซ็ตศูนย์</td>
+                <td>1,200</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-start">Handheld Spectrum Analyzer</td>
+                <td>1</td>
+                <td>28/12/2025</td>
+                <td>หน้าจอแตก</td>
+                <td>1,500</td>
+                <td>บริษัทซ่อม</td>
+                <td>
+                  <button class="btn btn-primary btn-action"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn btn-warning btn-action text-white"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-danger btn-action"><i class="fa-solid fa-trash"></i></button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -231,11 +204,6 @@
   </div>
 
   <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('active');
-      document.getElementById('overlay').classList.toggle('active');
-    }
-
     window.onload = function() {
       const now = new Date();
       const day = now.getDate();
@@ -243,7 +211,13 @@
       const year = now.getFullYear() + 543; // แปลงเป็น พ.ศ.
       document.getElementById('currentDate').innerText = `${day}/${month}/${year}`;
     };
+    
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('overlay').classList.toggle('active');
+    }
 
+    // ฟังก์ชัน logout เบื้องต้น
     function logout() {
       if(confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
          window.top.location.href = "https://www.google.com";

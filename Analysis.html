@@ -1,44 +1,165 @@
-<div class="analysis-page">
-  <div class="analysis-header d-flex justify-content-end align-items-center px-4">
-    <div class="date-text text-white">26/1/2569</div>
-  </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <div class="p-4">
-    <h2 class="analysis-title mb-4">เครื่องมือวัด กอง ศว.สว. ที่ต้องการให้วิเคราะห์ว่า ซ่อม/ซื้อใหม่</h2>
-
-    <div class="search-bar-container d-flex align-items-center mb-4">
-      <div class="me-4">
-        <label class="form-label d-inline-block me-2 mb-0">Asset</label>
-        <input type="text" id="assetInput" class="form-control custom-input d-inline-block" placeholder="">
-      </div>
-      <div class="me-4">
-        <label class="form-label d-inline-block me-2 mb-0">Repair Cost</label>
-        <input type="number" id="repairCostInput" class="form-control custom-input d-inline-block" placeholder="">
-      </div>
-      <button class="btn btn-search px-4 shadow" onclick="analyzeData()">search</button>
-    </div>
-
-    <div class="result-card content-card">
-      <div id="analysisResult" class="p-4">
-        <p class="text-muted text-center mt-5">กรุณากรอกข้อมูลและกดปุ่ม Search เพื่อเริ่มการวิเคราะห์</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  function analyzeData() {
-    const asset = document.getElementById('assetInput').value;
-    const cost = document.getElementById('repairCostInput').value;
-    
-    if(!asset || !cost) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
-      return;
+  <style>
+    :root {
+      --sidebar-bg: #111827;
+      --main-bg: #f8f9fa;
+      --header-bg: #5c7cfa;
+      --nav-active: #2563eb;
+      --search-btn: #1e3a8a;
     }
 
-    document.getElementById('analysisResult').innerHTML = '<div class="text-center mt-5"><div class="spinner-border text-primary"></div><p>กำลังวิเคราะห์ข้อมูล...</p></div>';
+    body { font-family: 'Sarabun', sans-serif; background-color: var(--main-bg); margin: 0; overflow-x: hidden; }
+
+    /* Sidebar & Layout Responsive */
+    .sidebar { 
+      width: 280px; background-color: var(--sidebar-bg); min-height: 100vh; 
+      color: white; position: fixed; z-index: 1000; transition: 0.3s; left: 0;
+    }
+    .main-content { margin-left: 280px; width: calc(100% - 280px); transition: 0.3s; min-height: 100vh; }
+
+    @media (max-width: 992px) {
+      .sidebar { left: -280px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; width: 100%; }
+      .mobile-toggle { display: block !important; }
+    }
+
+    /* Sidebar Content */
+    .user-profile { padding: 40px 20px; text-align: center; position: relative; }
+    .user-avatar { 
+      width: 80px; height: 80px; background: #ddd; border-radius: 50%; 
+      margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; 
+      font-size: 40px; color: #666; overflow: hidden; 
+    }
+    .nav-link { color: #9ca3af; padding: 15px 25px; display: flex; align-items: center; text-decoration: none; transition: 0.3s; font-size: 18px; }
+    .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+    .nav-link.active { background: var(--nav-active); color: white; border-radius: 0 50px 50px 0; margin-right: 20px; }
+    .nav-link i { width: 30px; font-size: 20px; }
+
+    /* Main UI Elements */
+    .top-header { background: var(--header-bg); color: white; padding: 10px 20px; text-align: right; font-size: 18px; display: flex; justify-content: flex-end; align-items: center; }
+    .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
     
-    // ตรงนี้สามารถเชื่อมต่อกับ google.script.run เพื่อดึงข้อมูลจาก Sheet มาคำนวณได้
-    console.log("Analyzing:", asset, "with cost:", cost);
-  }
-</script>
+    .page-title { font-weight: bold; margin-bottom: 30px; font-size: 24px; color: #000; }
+
+    /* Analysis Form Section */
+    .analysis-form { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
+    .form-label { font-size: 18px; font-weight: 500; margin-bottom: 0; }
+    .custom-input { 
+      border-radius: 12px; border: 1px solid #ccc; padding: 8px 15px; 
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); min-width: 150px; 
+    }
+    .btn-search { 
+      background-color: var(--search-btn); color: white; border-radius: 10px; 
+      padding: 8px 25px; font-weight: bold; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Output Box */
+    .output-box { 
+      background: white; border-radius: 20px; border: 1px solid #ddd; 
+      min-height: 450px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      padding: 20px;
+    }
+
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
+    .overlay.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="d-flex">
+    <div class="sidebar" id="sidebar">
+      <div class="user-profile">
+        <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+        <h4 class="mt-2 fw-bold text-decoration-underline">John Doe</h4>
+      </div>
+       <nav>
+        <a href="<?= getScriptUrl() ?>?p=Home" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="<?= getScriptUrl() ?>?p=Search" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+        <a href="<?= getScriptUrl() ?>?p=Analysis" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Analysis</a>
+        <a href="<?= getScriptUrl() ?>?p=Pending_Status" class="nav-link"><i class="fa-solid fa-hourglass"></i> Pending status</a>
+        <a href="<?= getScriptUrl() ?>?p=All_Equipment" class="nav-link"><i class="fa-solid fa-pen-to-square"></i> All equipment</a>
+        <a href="<?= getScriptUrl() ?>?p=User_Management" class="nav-link"><i class="fa-solid fa-users"></i> User management</a>
+        <a href="#" class="nav-link mt-4 text-light" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <div class="top-header">
+        <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <span id="currentDate"></span> 
+      </div>
+
+      <div class="p-4 p-md-5">
+        <h2 class="page-title">เครื่องมือวัด กอง ศว.สว. ที่ต้องการให้วิเคราะห์ว่า ซ่อม/ซื้อใหม่</h2>
+
+        <div class="analysis-form">
+          <label class="form-label">Asset</label>
+          <input type="text" class="custom-input" id="assetInput">
+          
+          <label class="form-label">Repair Cost</label>
+          <input type="text" class="custom-input" id="costInput">
+          
+          <button class="btn btn-search" onclick="runAnalysis()">search</button>
+        </div>
+
+        <div class="output-box" id="resultArea">
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+    
+    window.onload = function() {
+      const now = new Date();
+      const day = now.getDate();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear() + 543; // แปลงเป็น พ.ศ.
+      document.getElementById('currentDate').innerText = `${day}/${month}/${year}`;
+    };
+
+    function runAnalysis() {
+      const asset = document.getElementById('assetInput').value;
+      const cost = document.getElementById('costInput').value;
+      const resultArea = document.getElementById('resultArea');
+      
+      if(!asset || !cost) {
+        alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+        return;
+      }
+
+      // Mock Logic สำหรับการวิเคราะห์
+      resultArea.innerHTML = `
+        <div class="p-3">
+          <h4 class="text-primary fw-bold">ผลการวิเคราะห์สำหรับ: ${asset}</h4>
+          <hr>
+          <p><b>งบประมาณการซ่อมที่ระบุ:</b> ฿${Number(cost).toLocaleString()}</p>
+          <p class="mt-3">ระบบกำลังประมวลผลข้อมูลเปรียบเทียบกับราคาตลาดปัจจุบันและความคุ้มค่าในการใช้งาน...</p>
+        </div>
+      `;
+    }
+
+    function logout() {
+      if(confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
+         window.top.location.href = "https://www.google.com";
+      }
+    }
+  </script>
+</body>
+</html>
